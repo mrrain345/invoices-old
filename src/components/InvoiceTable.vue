@@ -23,21 +23,21 @@
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
         <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
-        <td>{{ toLocale(getBrutto()) }}</td>
+        <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">W tym</td>
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
         <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
-        <td>{{ toLocale(getBrutto()) }}</td>
+        <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">Razem</td>
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
         <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
-        <td>{{ toLocale(getBrutto()) }}</td>
+        <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
     </tbody>
   </table>
@@ -56,16 +56,6 @@ export default class InvoiceTable extends Vue {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
-  }
-
-  private getBrutto(): number {
-    const price =
-      Math.round((this.data.price * 1 + Number.EPSILON) * 100) / 100;
-    const vat = this.data.vat
-      ? Math.round((this.data.price * 0.23 + Number.EPSILON) * 100) / 100
-      : 0;
-    console.log(price, vat);
-    return price + vat;
   }
 }
 </script>
