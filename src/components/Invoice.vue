@@ -25,15 +25,27 @@
     <h1 class="title">Faktura VAT {{ data.id }}</h1>
     <InvoiceTable :data="data" />
 
-    <div>{{ priceToWords(data.price) }}</div>
+    <div style="margin-bottom: 50px;"></div>
 
-    <div v-if="data.comments !== ''">
-      <hr style="margin-top: 30px;" />
+    <InvoiceSummary :data="data" />
+
+    <div class="comments-div" v-if="data.comments !== ''">
       <strong>Uwagi:</strong>
       <span class="comments">{{ data.comments }}</span>
     </div>
 
-    <div style="margin-bottom: 40px;"></div>
+    <div style="margin-bottom: 160px;"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="sign">Podpis osoby upoważnionej do wystawienia</div>
+      </div>
+      <div class="col-md-6">
+        <div class="sign">Podpis osoby uprawnionej do odbioru</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 80px;"></div>
   </div>
 </template>
 
@@ -43,16 +55,18 @@ import InvoiceForm from "@/components/InvoiceForm.vue";
 import InvoiceDate from "@/components/InvoiceDate.vue";
 import InvoiceSubject from "@/components/InvoiceSubject.vue";
 import InvoiceTable from "@/components/InvoiceTable.vue";
+import InvoiceSummary from "@/components/InvoiceSummary.vue";
+
 import InvoiceData from "@/classes/InvoiceData";
 import Subject from "@/classes/Subject";
-import polishToWords from "@/assets/polish2words.ts";
 
 @Component({
   components: {
     InvoiceForm,
     InvoiceDate,
     InvoiceSubject,
-    InvoiceTable
+    InvoiceTable,
+    InvoiceSummary
   }
 })
 export default class Invoice extends Vue {
@@ -61,14 +75,8 @@ export default class Invoice extends Vue {
     "Sprzedawca",
     "ADI TRANSPORT ADAM MAJEWSKI",
     "ul. Objazdowa 19\n66-008 Słone",
-    "9291024492"
+    "PL9291024492"
   );
-
-  priceToWords() {
-    const round = Math.round(this.data.getBrutto());
-    const rest = Math.round((this.data.getBrutto() * 100) % 100);
-    return `${polishToWords(round)} ${rest < 10 ? "0" : ""}${rest}/100 PLN`;
-  }
 }
 </script>
 
@@ -81,8 +89,14 @@ h1 {
 
 .title {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 40px;
   color: #222222;
+}
+
+.comments-div {
+  border-top: solid 1px #222222;
+  margin-top: 40px;
+  padding: 5px;
 }
 
 .comments {
@@ -90,5 +104,15 @@ h1 {
   white-space: pre-wrap;
   display: inline-block;
   vertical-align: top;
+  letter-spacing: 0.2px;
+}
+
+.sign {
+  border-top: dotted 1px #222222;
+  text-align: center;
+  margin: 0 30px;
+  padding-top: 5px;
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

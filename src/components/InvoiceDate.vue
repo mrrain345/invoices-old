@@ -14,7 +14,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import InvoiceData from "@/classes/InvoiceData";
 
 @Component
-export default class InvoiceSubject extends Vue {
+export default class InvoiceDate extends Vue {
   @Prop() data!: InvoiceData;
 
   printDate(date: string) {

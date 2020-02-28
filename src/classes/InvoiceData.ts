@@ -21,6 +21,7 @@ export default class InvoiceData {
   nip = "";
   price = 0;
   payment: "cash" | "7" | "14" | "21" | "30" = "cash";
+  paymentDate = getCurrentDate();
   comments = "";
   vat = true;
 
