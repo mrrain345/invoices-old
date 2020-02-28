@@ -19,25 +19,25 @@
         <td>Usługa Transportowa</td>
         <td>szt.</td>
         <td>1</td>
-        <td>{{ data.price.toLocaleString() }}</td>
-        <td>{{ data.price.toLocaleString() }}</td>
+        <td>{{ toLocale(data.price) }}</td>
+        <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
-        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
+        <td>{{ data.vat ? toLocale(data.price * 0.23) : "Np." }}</td>
+        <td>{{ toLocale(data.vat ? data.price * 1.23 : data.price) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">W tym</td>
-        <td>{{ data.price.toLocaleString() }}</td>
+        <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
-        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
+        <td>{{ data.vat ? toLocale(data.price * 0.23) : "Np." }}</td>
+        <td>{{ toLocale(data.vat ? data.price * 1.23 : data.price) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">Razem</td>
-        <td>{{ data.price.toLocaleString() }}</td>
+        <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
-        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
+        <td>{{ data.vat ? toLocale(data.price * 0.23) : "Np." }}</td>
+        <td>{{ toLocale(data.vat ? data.price * 1.23 : data.price) }}</td>
       </tr>
     </tbody>
   </table>
@@ -50,6 +50,13 @@ import InvoiceData from "@/classes/InvoiceData";
 @Component
 export default class InvoiceTable extends Vue {
   @PropSync("invoiceData", { type: InvoiceData }) data!: InvoiceData;
+
+  private toLocale(num: number): string {
+    return Number(num).toLocaleString("pl-PL", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 }
 </script>
 
