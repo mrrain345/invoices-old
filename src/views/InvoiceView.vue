@@ -2,48 +2,17 @@
   <div class="container">
     <h1>Dane do faktury</h1>
     <InvoiceForm :invoiceData.sync="data" />
+
+    <div>
+      <button class="btn btn-primary float-right" @click="generatePDF()">
+        Generuj PDF
+      </button>
+      <div style="clear: both;"></div>
+    </div>
+
     <hr style="margin-bottom: 60px;" />
 
-    <div class="row">
-      <div class="col-md-6"></div>
-      <div class="col-md-6">
-        <InvoiceDate :data="data" />
-      </div>
-    </div>
-
-    <div style="margin-bottom: 50px;"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <InvoiceSubject :subject="seller" />
-      </div>
-      <div class="col-md-6">
-        <InvoiceSubject :subject="data.getCustomer()" />
-      </div>
-    </div>
-
-    <h1 class="title">Faktura VAT {{ data.id }}</h1>
-    <InvoiceTable :data="data" />
-
-    <div style="margin-bottom: 50px;"></div>
-
-    <InvoiceSummary :data="data" />
-
-    <div class="comments-div" v-if="data.comments !== ''">
-      <strong>Uwagi:</strong>
-      <span class="comments">{{ data.comments }}</span>
-    </div>
-
-    <div style="margin-bottom: 160px;"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="sign">Podpis osoby upoważnionej do wystawienia</div>
-      </div>
-      <div class="col-md-6">
-        <div class="sign">Podpis osoby uprawnionej do odbioru</div>
-      </div>
-    </div>
+    <Invoice :data="data" />
 
     <div style="margin-bottom: 80px;"></div>
   </div>
@@ -52,31 +21,41 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import InvoiceForm from "@/components/InvoiceForm.vue";
-import InvoiceDate from "@/components/InvoiceDate.vue";
-import InvoiceSubject from "@/components/InvoiceSubject.vue";
-import InvoiceTable from "@/components/InvoiceTable.vue";
-import InvoiceSummary from "@/components/InvoiceSummary.vue";
+import Invoice from "@/components/Invoice.vue";
 
 import InvoiceData from "@/classes/InvoiceData";
-import Subject from "@/classes/Subject";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 @Component({
   components: {
     InvoiceForm,
-    InvoiceDate,
-    InvoiceSubject,
-    InvoiceTable,
-    InvoiceSummary
+    Invoice
   }
 })
 export default class InvoiceView extends Vue {
   data = new InvoiceData();
-  seller = new Subject(
-    "Sprzedawca",
-    "ADI TRANSPORT ADAM MAJEWSKI",
-    "ul. Objazdowa 19\n66-008 Słone",
-    "PL9291024492"
-  );
+
+  generatePDF() {
+    console.log("generate");
+    const filename = `Faktura-${this.data.issueDate}.pdf`;
+    const invoice: HTMLElement | null = document.querySelector("#invoice");
+    if (invoice === null) return;
+
+    const scroll = window.scrollY;
+    window.scrollTo(0, 0);
+
+    html2canvas(invoice, { scale: 1 }).then(canvas => {
+      const pdf = new jsPDF("p", "mm", "a4");
+      const width = pdf.internal.pageSize.getWidth();
+      const height = pdf.internal.pageSize.getHeight();
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, width, height);
+      console.log(width, height);
+      pdf.save(filename);
+      window.scrollTo(0, scroll);
+    });
+  }
 }
 </script>
 
@@ -85,34 +64,5 @@ h1 {
   font-weight: bold;
   font-size: 28px;
   margin-bottom: 20px;
-}
-
-.title {
-  text-align: center;
-  margin-top: 40px;
-  color: #222222;
-}
-
-.comments-div {
-  border-top: solid 1px #222222;
-  margin-top: 40px;
-  padding: 5px;
-}
-
-.comments {
-  padding-left: 5px;
-  white-space: pre-wrap;
-  display: inline-block;
-  vertical-align: top;
-  letter-spacing: 0.2px;
-}
-
-.sign {
-  border-top: dotted 1px #222222;
-  text-align: center;
-  margin: 0 30px;
-  padding-top: 5px;
-  font-size: 12px;
-  font-weight: bold;
 }
 </style>
