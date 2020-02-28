@@ -5,7 +5,7 @@
         Numer faktury
       </label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="id" />
+        <input type="text" class="form-control" id="id" v-model="data.id" />
       </div>
     </div>
 
@@ -14,7 +14,12 @@
         Data wystawienia
       </label>
       <div class="col-sm-10">
-        <input type="date" class="form-control" id="issue-date" />
+        <input
+          type="date"
+          class="form-control"
+          id="issue-date"
+          v-model="data.issueDate"
+        />
       </div>
     </div>
 
@@ -23,7 +28,12 @@
         Data sprzedaży
       </label>
       <div class="col-sm-10">
-        <input type="date" class="form-control" id="sale-date" />
+        <input
+          type="date"
+          class="form-control"
+          id="sale-date"
+          v-model="data.saleDate"
+        />
       </div>
     </div>
 
@@ -34,7 +44,12 @@
         Nabywca
       </label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="purchaser" />
+        <input
+          type="text"
+          class="form-control"
+          id="purchaser"
+          v-model="data.purchaser"
+        />
       </div>
     </div>
 
@@ -43,7 +58,12 @@
         Adres
       </label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="address" />
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          v-model="data.address"
+        />
       </div>
     </div>
 
@@ -52,7 +72,7 @@
         NIP
       </label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="nip" />
+        <input type="text" class="form-control" id="nip" v-model="data.nip" />
       </div>
     </div>
 
@@ -61,7 +81,13 @@
         Cena
       </label>
       <div class="col-sm-10">
-        <input type="number" step="0.01" class="form-control" id="price" />
+        <input
+          type="number"
+          step="0.01"
+          class="form-control"
+          id="price"
+          v-model="data.price"
+        />
       </div>
     </div>
 
@@ -71,7 +97,11 @@
       </label>
       <div class="col-sm-10">
         <div class="form-check" style="padding-left: 0;">
-          <select class="custom-select mr-sm-2" id="peyment">
+          <select
+            class="custom-select mr-sm-2"
+            id="peyment"
+            v-model="data.payment"
+          >
             <option selected value="cash">Gotówka</option>
             <option value="7">Przelew 7 dni</option>
             <option value="14">Przelew 14 dni</option>
@@ -88,7 +118,13 @@
       </label>
       <div class="col-sm-10">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="vat" />
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="vat"
+            checked
+            v-model="data.vat"
+          />
         </div>
       </div>
     </div>
@@ -96,11 +132,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue } from "vue-property-decorator";
+import InvoiceData from "@/classes/InvoiceData";
 
 @Component
 export default class InvoiceForm extends Vue {
-  price = 0;
-  vat = true;
+  @PropSync("invoiceData", { type: InvoiceData }) data!: InvoiceData;
 }
 </script>

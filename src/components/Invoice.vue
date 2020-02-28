@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <h1>Dane do faktury</h1>
-    <InvoiceForm />
+    <InvoiceForm :invoiceData.sync="data" />
     <hr />
-    <h1 class="center">Faktura VAT {{ id }}</h1>
-    <InvoiceTable />
+    <h1 class="center">Faktura VAT {{ data.id }}</h1>
+    <InvoiceTable :invoiceData.sync="data" />
   </div>
 </template>
 
@@ -12,6 +12,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import InvoiceForm from "@/components/InvoiceForm.vue";
 import InvoiceTable from "@/components/InvoiceTable.vue";
+import InvoiceData from "@/classes/InvoiceData";
 
 @Component({
   components: {
@@ -20,7 +21,7 @@ import InvoiceTable from "@/components/InvoiceTable.vue";
   }
 })
 export default class Invoice extends Vue {
-  id = "19/02/2020";
+  data = new InvoiceData();
 }
 </script>
 

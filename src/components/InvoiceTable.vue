@@ -19,37 +19,37 @@
         <td>Usługa Transportowa</td>
         <td>szt.</td>
         <td>1</td>
-        <td>{{ price }}</td>
-        <td>{{ price }}</td>
-        <td>{{ vat ? "23%" : "Np." }}</td>
-        <td>{{ vat ? price * 0.23 : "Np." }}</td>
-        <td>{{ vat ? price * 1.23 : "Np." }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.vat ? "23%" : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">W tym</td>
-        <td>{{ price }}</td>
-        <td>{{ vat ? "23%" : "Np." }}</td>
-        <td>296,70</td>
-        <td>1 586,70</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.vat ? "23%" : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">Razem</td>
-        <td>1 290,00</td>
-        <td>23%</td>
-        <td>296,70</td>
-        <td>1 586,70</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.vat ? "23%" : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
+        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue } from "vue-property-decorator";
+import InvoiceData from "@/classes/InvoiceData";
 
 @Component
 export default class InvoiceTable extends Vue {
-  price = 1000;
-  vat = true;
+  @PropSync("invoiceData", { type: InvoiceData }) data!: InvoiceData;
 }
 </script>
 
