@@ -8,7 +8,7 @@
       </div>
       <div class="row field" v-if="data.payment !== 'cash'">
         <div class="col-4 key">Termin płatności</div>
-        <div class="col-8 value">{{ printDate(data.paymentDate) }}</div>
+        <div class="col-8 value">{{ printPaymentDate() }}</div>
       </div>
       <div class="row field" v-if="data.payment !== 'cash'">
         <div class="col-4 key">Numer konta</div>
@@ -60,6 +60,34 @@ export default class InvoiceSummary extends Vue {
   printDate(date: string) {
     return date
       .split("-")
+      .reverse()
+      .join("-");
+  }
+
+  printPaymentDate() {
+    if (this.data.payment === "cash") return "";
+    const dateStr = this.data.issueDate.split("-");
+    const date = new Date();
+    console.log(
+      parseInt(dateStr[0]),
+      parseInt(dateStr[1]) - 1,
+      parseInt(dateStr[2]) + parseInt(this.data.payment)
+    );
+
+    date.setFullYear(
+      parseInt(dateStr[0]),
+      parseInt(dateStr[1]) - 1,
+      parseInt(dateStr[2]) + parseInt(this.data.payment)
+    );
+
+    console.log(date.toISOString());
+
+    return [
+      ...date
+        .toISOString()
+        .split("T")[0]
+        .split("-")
+    ]
       .reverse()
       .join("-");
   }

@@ -1,14 +1,7 @@
 import Subject from "@/classes/Subject";
 
 function getCurrentDate(): string {
-  return [
-    ...new Date()
-      .toISOString()
-      .split("T")[0]
-      .split(".")
-  ]
-    .reverse()
-    .join("-");
+  return new Date().toISOString().split("T")[0];
 }
 
 export default class InvoiceData {
@@ -21,7 +14,6 @@ export default class InvoiceData {
   nip = "";
   price = 0;
   payment: "cash" | "7" | "14" | "21" | "30" = "cash";
-  paymentDate = getCurrentDate();
   comments = "";
   vat = true;
 
