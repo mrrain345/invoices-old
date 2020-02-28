@@ -1,7 +1,18 @@
+function getCurrentDate(): string {
+  return [
+    ...new Date()
+      .toISOString()
+      .split("T")[0]
+      .split(".")
+  ]
+    .reverse()
+    .join("-");
+}
+
 export default class InvoiceData {
   id = "";
-  issueDate: Date = new Date();
-  saleDate: Date = new Date();
+  issueDate = getCurrentDate();
+  saleDate = getCurrentDate();
 
   purchaser = "";
   address = "";
