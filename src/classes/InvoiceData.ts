@@ -1,3 +1,5 @@
+import Subject from "@/classes/Subject";
+
 function getCurrentDate(): string {
   return [
     ...new Date()
@@ -14,7 +16,7 @@ export default class InvoiceData {
   issueDate = getCurrentDate();
   saleDate = getCurrentDate();
 
-  purchaser = "";
+  customer = "";
   address = "";
   nip = "";
   price = 0;
@@ -22,11 +24,15 @@ export default class InvoiceData {
   comments = "";
   vat = true;
 
-  getBrutto(): number {
+  getBrutto() {
     const price = Math.round((this.price * 1 + Number.EPSILON) * 100) / 100;
     const vat = this.vat
       ? Math.round((this.price * 0.23 + Number.EPSILON) * 100) / 100
       : 0;
     return price + vat;
+  }
+
+  getCustomer() {
+    return new Subject("Nabywca", this.customer, this.address, this.nip);
   }
 }

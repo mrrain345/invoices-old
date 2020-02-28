@@ -22,21 +22,21 @@
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
+        <td>{{ toLocale(data.vat ? data.price * 0.23 : 0) }}</td>
         <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">W tym</td>
         <td>{{ toLocale(data.price) }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
+        <td>{{ toLocale(data.vat ? data.price * 0.23 : 0) }}</td>
         <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">Razem</td>
         <td>{{ toLocale(data.price) }}</td>
-        <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ toLocale(data.vat ? (data.price * 0.23) : 0) }}</td>
+        <td></td>
+        <td>{{ toLocale(data.vat ? data.price * 0.23 : 0) }}</td>
         <td>{{ toLocale(data.getBrutto()) }}</td>
       </tr>
     </tbody>
@@ -44,12 +44,12 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import InvoiceData from "@/classes/InvoiceData";
 
 @Component
 export default class InvoiceTable extends Vue {
-  @PropSync("invoiceData", { type: InvoiceData }) data!: InvoiceData;
+  @Prop() data!: InvoiceData;
 
   private toLocale(num: number): string {
     return Number(num).toLocaleString("pl-PL", {
