@@ -19,25 +19,25 @@
         <td>Usługa Transportowa</td>
         <td>szt.</td>
         <td>1</td>
-        <td>{{ data.price }}</td>
-        <td>{{ data.price }}</td>
+        <td>{{ data.price.toLocaleString() }}</td>
+        <td>{{ data.price.toLocaleString() }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
+        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
+        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">W tym</td>
-        <td>{{ data.price }}</td>
+        <td>{{ data.price.toLocaleString() }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
+        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
+        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
       </tr>
       <tr>
         <td colspan="5" class="bold">Razem</td>
-        <td>{{ data.price }}</td>
+        <td>{{ data.price.toLocaleString() }}</td>
         <td>{{ data.vat ? "23%" : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 0.23 : "Np." }}</td>
-        <td>{{ data.vat ? data.price * 1.23 : data.price }}</td>
+        <td>{{ data.vat ? (data.price * 0.23).toLocaleString() : "Np." }}</td>
+        <td>{{ (data.vat ? data.price * 1.23 : data.price).toLocaleString() }}</td>
       </tr>
     </tbody>
   </table>
