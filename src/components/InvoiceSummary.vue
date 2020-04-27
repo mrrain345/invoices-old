@@ -20,7 +20,7 @@
             85 1930 1060 2260 0273 5454 0001
           </span>
           <span v-else>
-            PL85 1930 1060 2260 0273 5454 0001<br/>
+            PL85 1930 1060 2260 0273 5454 0001<br />
             BIC (SWIFT): POLUPLPR
           </span>
           <!--Santander Bank Polska S.A.<br/>

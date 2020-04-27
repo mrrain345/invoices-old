@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <div>
     <div class="form-group row">
       <label for="id" class="col-sm-2 col-form-label">Numer faktury</label>
       <div class="col-sm-10">
@@ -38,6 +38,18 @@
     <br />
 
     <div class="form-group row">
+      <label for="preset" class="col-sm-2 col-form-label">Preset</label>
+      <div class="col-sm-10">
+        <select class="custom-select" id="preset" v-model="preset">
+          <option value="-1">nowy</option>
+          <option v-for="(item, id) in presets" :key="id" :value="id">
+            <span>{{ item.customer }}</span>
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
       <label for="customer" class="col-sm-2 col-form-label">Nabywca</label>
       <div class="col-sm-10">
         <textarea
@@ -68,6 +80,25 @@
         <input type="text" class="form-control" id="nip" v-model="data.nip" />
       </div>
     </div>
+
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <div class="float-right">
+          <button class="btn btn-secondary" @click="remove">
+            Usuń
+          </button>
+          <button
+            class="btn btn-secondary"
+            @click="save"
+            style="margin-left: 10px;"
+          >
+            Zapisz
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <br />
 
     <div class="form-group row">
       <label for="price" class="col-sm-2 col-form-label">Cena</label>
@@ -129,15 +160,67 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 import InvoiceData from "@/classes/InvoiceData";
+import Preset from "@/classes/Preset";
 
 @Component
 export default class InvoiceForm extends Vue {
   @PropSync("invoiceData", { type: InvoiceData }) data!: InvoiceData;
+  preset = -1;
+  presets: Preset[] = [];
+
+  constructor() {
+    super();
+    const json = localStorage.getItem("presets");
+    if (json === null) return;
+    const presets: Preset[] = JSON.parse(json);
+    this.presets.push(...presets);
+  }
+
+  @Watch('preset')
+  onPresetChanged(val: number) {
+    if (val == -1) {
+      this.data.customer = "";
+      this.data.address = "";
+      this.data.nip = "";
+      return;
+    };
+
+    const preset = this.presets[val];
+    this.data.customer = preset.customer;
+    this.data.address = preset.address;
+    this.data.nip = preset.nip;
+  }
+
+  save() {
+    const preset = {
+      customer: this.data.customer.toUpperCase(),
+      address: this.data.address,
+      nip: this.data.nip
+    }
+
+    this.preset = this.presets.push(preset) -1;
+    localStorage.setItem("presets", JSON.stringify(this.presets));
+  }
+
+  remove() {
+    if (this.preset === -1) return;
+    this.presets.splice(this.preset, 1);
+    this.preset = -1;
+    localStorage.setItem("presets", JSON.stringify(this.presets));
+  }
+
+  private setPreset() {
+    const preset = (this.preset !== -1) ? this.presets[this.preset] : new Preset();
+
+    this.data.customer = preset.customer;
+    this.data.address = preset.address;
+    this.data.nip = preset.nip;
+  }
 }
 </script>
