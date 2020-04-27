@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <div style="margin-bottom: 40px;"></div>
+
     <h1>Dane do faktury</h1>
     <InvoiceForm :invoiceData.sync="data" />
 
@@ -10,23 +12,18 @@
       <div style="clear: both;"></div>
     </div>
 
-    <hr style="margin-bottom: 60px;" />
+    <hr />
 
-    <Invoice :data="data" />
-
-    <div style="margin-bottom: 80px;"></div>
+    <iframe id="preview" src="/preview"></iframe>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import InvoiceForm from "@/components/InvoiceForm.vue";
 import Invoice from "@/components/Invoice.vue";
 
 import InvoiceData from "@/classes/InvoiceData";
-
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 
 @Component({
   components: {
@@ -37,24 +34,24 @@ import html2canvas from "html2canvas";
 export default class InvoiceView extends Vue {
   data = new InvoiceData();
 
+  constructor() {
+    super();
+    document.title = "Faktura-" + this.data.issueDate.toString();
+  }
+
+  @Watch("data", { deep: true })
+  odDataChanged() {
+    document.title = "Faktura-" + this.data.issueDate.toString();
+    this.sendData("UPDATE", this.data);
+  }
+
   generatePDF() {
-    console.log("generate");
-    const filename = `Faktura-${this.data.issueDate}.pdf`;
-    const invoice: HTMLElement | null = document.querySelector("#invoice");
-    if (invoice === null) return;
+    this.sendData("PRINT", this.data);
+  }
 
-    const scroll = window.scrollY;
-    window.scrollTo(0, 0);
-
-    html2canvas(invoice, { scale: 1 }).then(canvas => {
-      const pdf = new jsPDF("p", "mm", "a4");
-      const width = pdf.internal.pageSize.getWidth();
-      const height = pdf.internal.pageSize.getHeight();
-      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, width, height);
-      console.log(width, height);
-      pdf.save(filename);
-      window.scrollTo(0, scroll);
-    });
+  private sendData(cmd: string, data: {}) {
+    const preview = document.getElementById("preview") as HTMLIFrameElement;
+    preview.contentWindow?.postMessage({ cmd, data }, "/");
   }
 }
 </script>
@@ -64,5 +61,14 @@ h1 {
   font-weight: bold;
   font-size: 28px;
   margin-bottom: 20px;
+}
+
+iframe {
+  width: 1200px;
+  height: 1600px;
+  border: none;
+  margin: 0 auto;
+  display: block;
+  box-sizing: border-box;
 }
 </style>

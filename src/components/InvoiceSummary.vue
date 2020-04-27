@@ -4,7 +4,9 @@
       <div class="row field">
         <div class="col-4 key">Sposób płatności</div>
         <div class="col-8 value" v-if="data.payment === 'cash'">gotówka</div>
-        <div class="col-8 value" v-else>przelew w terminie {{ data.payment }} dni</div>
+        <div class="col-8 value" v-else>
+          przelew w terminie {{ data.payment }} dni
+        </div>
       </div>
       <div class="row field" v-if="data.payment !== 'cash'">
         <div class="col-4 key">Termin płatności</div>
@@ -13,8 +15,17 @@
       <div class="row field" v-if="data.payment !== 'cash'">
         <div class="col-4 key">Numer konta</div>
         <div class="col-8 value">
-          BPS S.A.
-          <br />85 1930 1060 2260 0273 5454 0001
+          BPS S.A.<br />
+          <span v-if="data.vat === true">
+            85 1930 1060 2260 0273 5454 0001
+          </span>
+          <span v-else>
+            PL85 1930 1060 2260 0273 5454 0001<br/>
+            BIC (SWIFT): POLUPLPR
+          </span>
+          <!--Santander Bank Polska S.A.<br/>
+          PL84109015350000000144484770<br/>
+          BIC (SWIFT): WBKPPLPP-->
         </div>
       </div>
     </div>
@@ -24,7 +35,7 @@
           <strong>Do zapłaty</strong>
         </div>
         <div class="col-8 value">
-          <strong>{{ toLocale(data.getBrutto()) }} PLN</strong>
+          <strong>{{ toLocale(data.getBrutto()) }} PL</strong>
         </div>
       </div>
       <div class="row field">
@@ -47,7 +58,7 @@ export default class InvoiceSummary extends Vue {
   priceToWords() {
     const round = Math.round(this.data.getBrutto());
     const rest = Math.round((this.data.getBrutto() * 100) % 100);
-    return `${polishToWords(round)} ${rest < 10 ? "0" : ""}${rest}/100 PLN`;
+    return `${polishToWords(round)} ${rest < 10 ? "0" : ""}${rest}/100 PL`;
   }
 
   private toLocale(num: number): string {
@@ -103,6 +114,7 @@ export default class InvoiceSummary extends Vue {
 
 .key {
   text-align: right;
+  padding: 0 15px 0 0;
 }
 
 .value {

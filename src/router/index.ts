@@ -11,10 +11,10 @@ const routes = [
     component: InvoiceView
   },
   {
-    path: "/about",
-    name: "AboutView",
+    path: "/preview",
+    name: "Preview",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue")
+      import(/* webpackChunkName: "about" */ "../views/PreviewView.vue")
   }
 ];
 

@@ -5,7 +5,9 @@
     </div>
     <div class="col-12 name">{{ subject.name }}</div>
     <div class="col-12 address">{{ subject.address }}</div>
-    <div class="col-12 nip">{{ subject.nip !== "" ? "NIP:" : "" }} {{ subject.nip }}</div>
+    <div class="col-12 nip">
+      {{ subject.nip !== "" ? "NIP:" : "" }} {{ subject.nip }}
+    </div>
   </div>
 </template>
 

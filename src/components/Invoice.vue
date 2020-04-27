@@ -1,43 +1,47 @@
 <template>
-  <div id="invoice" style="width: 210mm; height: 297mm;">
-    <div class="row">
-      <div class="col-md-6"></div>
-      <div class="col-md-6">
-        <InvoiceDate :data="data" />
+  <div>
+    <div id="invoice" class="container">
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <InvoiceDate :data="data" />
+        </div>
+      </div>
+
+      <div style="margin-bottom: 50px;"></div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <InvoiceSubject :subject="seller" />
+        </div>
+        <div class="col-md-6">
+          <InvoiceSubject :subject="data.getCustomer()" />
+        </div>
+      </div>
+
+      <h1 class="title">Faktura VAT {{ data.id }}</h1>
+      <InvoiceTable :data="data" />
+
+      <div style="margin-bottom: 50px;"></div>
+
+      <InvoiceSummary :data="data" />
+
+      <div class="comments-div" v-if="data.comments !== ''">
+        <strong>Uwagi:</strong>
+        <span class="comments">{{ data.comments }}</span>
       </div>
     </div>
 
-    <div style="margin-bottom: 50px;"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <InvoiceSubject :subject="seller" />
-      </div>
-      <div class="col-md-6">
-        <InvoiceSubject :subject="data.getCustomer()" />
-      </div>
-    </div>
-
-    <h1 class="title">Faktura VAT {{ data.id }}</h1>
-    <InvoiceTable :data="data" />
-
-    <div style="margin-bottom: 50px;"></div>
-
-    <InvoiceSummary :data="data" />
-
-    <div class="comments-div" v-if="data.comments !== ''">
-      <strong>Uwagi:</strong>
-      <span class="comments">{{ data.comments }}</span>
-    </div>
-
-    <div style="margin-bottom: 160px;"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="sign">Podpis osoby upoważnionej do wystawienia</div>
-      </div>
-      <div class="col-md-6">
-        <div class="sign">Podpis osoby uprawnionej do odbioru</div>
+    <div class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sign">Podpis osoby upoważnionej do wystawienia</div>
+          </div>
+          <div class="col-md-6">
+            <div class="sign">Podpis osoby uprawnionej do odbioru</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -68,15 +72,23 @@ export default class Invoice extends Vue {
     "Sprzedawca",
     "ADI TRANSPORT ADAM MAJEWSKI",
     "ul. Objazdowa 19\n66-008 Słone",
-    "PL9291024492"
+    "PL 9291024492"
   );
+
+  /*seller = new Subject(
+    "Sprzedawca",
+    "USŁUGI LEŚNE KAROLINA BARTOSIK",
+    "ul. Objazdowa 17\n66-008 Słone",
+    "PL 9731052430"
+  );*/
 }
 </script>
 
 <style scoped>
 #invoice {
-  margin: 0 auto;
-  padding: 10mm;
+  color: #000000;
+  padding: 27mm 16mm 27mm 16mm;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -109,8 +121,15 @@ h1 {
   border-top: dotted 1px #222222;
   text-align: center;
   margin: 0 30px;
-  padding-top: 5px;
+  padding: 5px;
   font-size: 12px;
   font-weight: bold;
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 20px;
+  width: 100%;
 }
 </style>
