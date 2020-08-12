@@ -75,12 +75,12 @@ export default class Invoice extends Vue {
     "PL 9291024492"
   );
 
-  /*seller = new Subject(
-    "Sprzedawca",
-    "USŁUGI LEŚNE KAROLINA BARTOSIK",
-    "ul. Objazdowa 17\n66-008 Słone",
-    "PL 9731052430"
-  );*/
+  // seller = new Subject(
+  //   "Sprzedawca",
+  //   "USŁUGI LEŚNE KAROLINA BARTOSIK",
+  //   "ul. Objazdowa 17\n66-008 Słone",
+  //   "PL 9731052430"
+  // );
 }
 </script>
 

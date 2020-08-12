@@ -23,9 +23,9 @@
             PL85 1930 1060 2260 0273 5454 0001<br />
             BIC (SWIFT): POLUPLPR
           </span>
-          <!--Santander Bank Polska S.A.<br/>
+          <!-- Santander Bank Polska S.A.<br/>
           PL84109015350000000144484770<br/>
-          BIC (SWIFT): WBKPPLPP-->
+          BIC (SWIFT): WBKPPLPP -->
         </div>
       </div>
     </div>
@@ -35,12 +35,12 @@
           <strong>Do zapłaty</strong>
         </div>
         <div class="col-8 value">
-          <strong>{{ toLocale(data.getBrutto()) }} PL</strong>
+          <strong>{{ toLocale(data.getBrutto()) }} {{ data.vat ? "PLN" : "EUR" }}</strong>
         </div>
       </div>
       <div class="row field">
         <div class="col-4 key">Słownie</div>
-        <div class="col-8 value">{{ priceToWords(data.price) }}</div>
+        <div class="col-8 value">{{ priceToWords(data.price) }} {{ data.vat ? "PLN" : "EUR" }}</div>
       </div>
     </div>
   </div>
@@ -56,9 +56,9 @@ export default class InvoiceSummary extends Vue {
   @Prop() data!: InvoiceData;
 
   priceToWords() {
-    const round = Math.round(this.data.getBrutto());
+    const round = Math.floor(this.data.getBrutto());
     const rest = Math.round((this.data.getBrutto() * 100) % 100);
-    return `${polishToWords(round)} ${rest < 10 ? "0" : ""}${rest}/100 PL`;
+    return `${polishToWords(round)} ${rest < 10 ? "0" : ""}${rest}/100`;
   }
 
   private toLocale(num: number): string {
